@@ -7,30 +7,18 @@ from googleapiclient.discovery import build
 from email.mime.text import MIMEText
 from time import sleep
 from dotenv import load_dotenv
-
-# Load environment variables
 load_dotenv()
 SHEET_NAME = os.getenv("SHEET_NAME", "Emails")
 POLL_INTERVAL = 30  # seconds
-
-# OAuth scopes
 SCOPES = [
     'https://www.googleapis.com/auth/gmail.send',
     'https://www.googleapis.com/auth/spreadsheets'
 ]
-
-
-# Authenticate Gmail API
 flow = InstalledAppFlow.from_client_secrets_file('credentials.json', SCOPES)
 creds = flow.run_local_server(port=0)
 gmail_service = build('gmail', 'v1', credentials=creds)
-
-# Authenticate Google Sheets
 gc = gspread.service_account(filename='service_account.json')  # Use your service account
 sheet = gc.open(SHEET_NAME).sheet1
-
-
-# Keep track of sent rows
 sent_rows = []
 
 while True:
@@ -46,7 +34,6 @@ while True:
         if not to_email or not body:
             continue
 
-        # Create email
         message = MIMEText(body)
         message['to'] = to_email
         message['subject'] = subject or "No Subject"
