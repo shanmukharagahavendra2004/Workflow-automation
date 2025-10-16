@@ -9,7 +9,7 @@ from time import sleep
 from dotenv import load_dotenv
 load_dotenv()
 SHEET_NAME = os.getenv("SHEET_NAME", "Emails")
-POLL_INTERVAL = 30  # seconds
+POLL_INTERVAL = 30  
 SCOPES = [
     'https://www.googleapis.com/auth/gmail.send',
     'https://www.googleapis.com/auth/spreadsheets'
@@ -17,7 +17,7 @@ SCOPES = [
 flow = InstalledAppFlow.from_client_secrets_file('credentials.json', SCOPES)
 creds = flow.run_local_server(port=0)
 gmail_service = build('gmail', 'v1', credentials=creds)
-gc = gspread.service_account(filename='service_account.json')  # Use your service account
+gc = gspread.service_account(filename='service_account.json')  
 sheet = gc.open(SHEET_NAME).sheet1
 sent_rows = []
 
